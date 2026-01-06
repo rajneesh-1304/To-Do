@@ -5,8 +5,10 @@ import Tasks from './components/Tasks';
 
 function App() {
   const [tasks, setTasks] = useState(() => {
-    return JSON.parse(localStorage.getItem('tasks')) || [];
-  });
+  const savedTasks = JSON.parse(localStorage.getItem('tasks'));
+
+  return Array.isArray(savedTasks) ? savedTasks : [];
+});
 
   const [deletedTasks, setDeletedTasks] = useState(() => {
     return JSON.parse(localStorage.getItem('deletedTasks')) || [];
@@ -28,7 +30,17 @@ function App() {
   };
 
   const addTask = () => {
-    setTasks([...tasks, newTask]);
+    if(newTask.trim() === ''){
+      return;
+    }
+
+    const newTaskObject={
+      id: Date.now(),
+      title: newTask,
+      completed: false,
+    }
+    
+    setTasks([...tasks, newTaskObject]);
     setNewTask('');
   }
 
@@ -47,7 +59,14 @@ function App() {
     const updateDeletedTask = deletedTasks.filter((_, i) => i !== index);
     setDeletedTasks(updateDeletedTask);
   }
-
+const toggleTask= (id) => {
+  console.log({id})
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed} : task
+      )
+    );
+  }
 
   return (
     <>
@@ -63,7 +82,7 @@ function App() {
           </div>
 
           <div className='display'>
-            <Tasks tasks={tasks} deleteTask={deleteTask} />
+            <Tasks tasks={tasks} deleteTask={deleteTask} toggleTask={toggleTask}/>
             <RestoredTask deletedTasks={deletedTasks} restoreTask={restoreTask} />
           </div>
         </div>

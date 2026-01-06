@@ -8,7 +8,7 @@ const RestoredTask = ({ deletedTasks, restoreTask }) => {
       <ul className="showList">
         {deletedTasks.map((task, idx) => (
           <li className="list" key={idx}>
-            {task}
+            {task.title}
             <button
               className="restoreButton"
               onClick={() => restoreTask(idx)}
