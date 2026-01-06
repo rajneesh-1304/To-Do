@@ -124,3 +124,8 @@ body{
   border-radius: 10px;
   color: white;
 }
+
+.hide{
+  display: none;
+  visibility: hidden;
+}

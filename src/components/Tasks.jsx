@@ -2,7 +2,7 @@ import React from 'react';
 import '../index.css';
 
 const Tasks = ({ tasks, deleteTask, toggleTask }) => {
-  
+
   return (
     <>
       <h2 className="showTask">Tasks:</h2>
@@ -11,13 +11,13 @@ const Tasks = ({ tasks, deleteTask, toggleTask }) => {
           <li className="list" key={idx}>
             {task.title}
             <div>
-              <button className='pending-icon' onClick={()=>{toggleTask(task.id)}}>{task.completed ? '✅' : '❌'}</button>
-                <button
-              className="deleteButton"
-              onClick={() => deleteTask(idx)}
-            >
-              Delete
-            </button>
+              <button className='pending-icon' onClick={() => { toggleTask(task.id) }}>{task.completed ? '✅' : '❌'}</button>
+              <button
+                className="deleteButton hide" style={{display:"block", }}
+                onClick={() => deleteTask(idx)}
+              >
+                Delete
+              </button>
             </div>
           </li>
         ))}
