@@ -11,7 +11,8 @@ function App() {
 });
 
   const [deletedTasks, setDeletedTasks] = useState(() => {
-    return JSON.parse(localStorage.getItem('deletedTasks')) || [];
+    const savedDeleted = JSON.parse(localStorage.getItem('deletedTasks'));
+    return Array.isArray(savedDeleted) ? savedDeleted : [];
   });
 
   const [newTask, setNewTask] = useState('');
@@ -40,25 +41,26 @@ function App() {
       completed: false,
     }
     
-    setTasks([...tasks, newTaskObject]);
+    setTasks([newTaskObject, ...tasks]);
     setNewTask('');
   }
 
-  const deleteTask = (index) => {
-    const taskToDelete = tasks[index];
-    setDeletedTasks([...deletedTasks, taskToDelete]);
+  const deleteTask = (id) => {
+    const taskToDelete = tasks.find(task => task.id === id);
+    if (!taskToDelete) return;
 
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
+    setTasks(tasks.filter(task => task.id !== id));
+    setDeletedTasks([...deletedTasks, taskToDelete]);
   };
 
-  const restoreTask = (index) => {
-    const taskToRestore = deletedTasks[index];
-    setTasks([...tasks, taskToRestore]);
+  const restoreTask = (id) => {
+    const taskToRestore = deletedTasks.find(task => task.id === id);
+    if (!taskToRestore) return;
 
-    const updateDeletedTask = deletedTasks.filter((_, i) => i !== index);
-    setDeletedTasks(updateDeletedTask);
-  }
+    setDeletedTasks(deletedTasks.filter(task => task.id !== id));
+    setTasks([...tasks, { ...taskToRestore, completed: false }]);
+  };
+
 const toggleTask= (id) => {
   console.log({id})
     setTasks(
@@ -75,7 +77,7 @@ const toggleTask= (id) => {
         <div className='task'>
 
           <div className='addTask'>
-            <input type="text" className='inputTask' value={newTask} onChange={handleInputChange} />
+            <input type="text" className='inputTask' placeholder="Enter task..." value={newTask} onChange={handleInputChange} />
             <button className='addButton'
               onClick={addTask}
             >Add</button>

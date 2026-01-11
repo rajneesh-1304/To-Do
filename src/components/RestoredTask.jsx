@@ -6,12 +6,11 @@ const RestoredTask = ({ deletedTasks, restoreTask }) => {
     <>
       <h2 className="showTask">Restored Tasks:</h2>
       <ul className="showList">
-        {deletedTasks.map((task, idx) => (
-          <li className="list" key={idx}>
+        {deletedTasks.map((task) => (
+          <li className="list" key={task.id}>
             {task.title}
             <button
-              className="restoreButton"
-              onClick={() => restoreTask(idx)}
+              className="restoreButton" onClick={() => restoreTask(task.id)}
             >
               Restore
             </button>

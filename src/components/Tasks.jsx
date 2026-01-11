@@ -2,22 +2,29 @@ import React from 'react';
 import '../index.css';
 
 const Tasks = ({ tasks, deleteTask, toggleTask }) => {
-
   return (
     <>
       <h2 className="showTask">Tasks:</h2>
       <ul className="showList">
-        {tasks.map((task, idx) => (
-          <li className="list" key={idx}>
-            {task.title}
+        {tasks.map((task) => (
+          <li className="list" key={task.id}>
+              {task.title}
+
             <div>
-              <button className='pending-icon' onClick={() => { toggleTask(task.id) }}>{task.completed ? '✅' : '❌'}</button>
               <button
-                className="deleteButton hide" style={{display:"block", }}
-                onClick={() => deleteTask(idx)}
+                className="pending-icon"
+                onClick={() => toggleTask(task.id)}
               >
-                Delete
+                {task.completed ? '✅' : '❌'}
               </button>
+              {task.completed && (
+                <button
+                  className="deleteButton"
+                  onClick={() => deleteTask(task.id)}
+                >
+                  Delete
+                </button>
+              )}
             </div>
           </li>
         ))}
